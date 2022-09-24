@@ -57,6 +57,10 @@ def write_json(data, filename):
     return 0
 
 
+def send_to_s3():
+    pass
+
+
 if __name__=="__main__":
     customers, products, shops, orders = generate_orders(200)
     write_to_csv(customers, 'customers')
