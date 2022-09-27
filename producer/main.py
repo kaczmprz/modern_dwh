@@ -1,9 +1,29 @@
 import random
 import csv
 import json
+import logging
+import boto3
+from datetime import datetime
 from faker import Faker
 from collections import namedtuple
 from os.path import dirname, abspath, join
+
+# create logger
+logger = logging.getLogger('producer')
+logger.setLevel(logging.DEBUG)
+
+# create console handler and set level to debug
+ch = logging.StreamHandler()
+ch.setLevel(logging.WARNING)
+
+# create formatter
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+# add formatter to ch
+ch.setFormatter(formatter)
+
+# add ch to logger
+logger.addHandler(ch)
 
 fake = Faker('pl_PL')
 
@@ -57,8 +77,19 @@ def write_json(data, filename):
     return 0
 
 
-def send_to_s3():
-    pass
+def send_to_s3(filename, file_format):
+    try:
+        now = datetime.now()
+        year, month, day = now.year, now.month, now.day
+        now_ = datetime.now().strftime("%Y%m%d%H%M%S")
+        s3 = boto3.client('s3')
+        dir_ = dirname(dirname(abspath(__file__)))
+        path_file = join(join(dir_, 'data'), '{filename}.{fileformat}'.format(filename=filename, fileformat=file_format))
+        s3.upload_file(path_file, 'mdw-staging', '{filename}/{year}/{month}/{day}/{filename}_{now_}.{file_format}'.format(
+            filename=filename, year=year, month=month, day=day, now_=now_, file_format=file_format))
+        return 0
+    except Exception as e:
+        logger.warning('{e}'.format(e=e))
 
 
 if __name__=="__main__":
@@ -66,5 +97,10 @@ if __name__=="__main__":
     write_to_csv(customers, 'customers')
     write_to_csv(products, 'products')
     write_to_csv(shops, 'shops')
-    write_json(orders, 'orders')
     write_json(shops, 'shops')
+    write_json(orders, 'orders')
+    send_to_s3('customers', 'csv')
+    send_to_s3('products', 'csv')
+    send_to_s3('shops', 'csv')
+    send_to_s3('shops', 'json')
+    send_to_s3('orders', 'json')

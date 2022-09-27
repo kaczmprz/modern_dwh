@@ -17,53 +17,90 @@ provider "snowflake" {
   role  = "SECURITYADMIN"
 }
 
-resource "snowflake_database" "db" {
+resource "snowflake_database" "retail" {
   provider  = snowflake.sysadmin
-  name     = "TF_DEMO"
+  name      = "RETAIL"
+  comment   = "Production data warehouse"
 }
 
-resource "snowflake_warehouse" "warehouse" {
-  provider  = snowflake.sysadmin
-  name           = "TF_DEMO"
-  warehouse_size = "large"
+resource "snowflake_warehouse" "load_wh" {
+  provider       = snowflake.sysadmin
+  name           = "LOAD_WH"
+  warehouse_size = "xsmall"
+  comment        = "Virtual Warehouse for data loading"
   auto_suspend = 60
 }
 
-resource "snowflake_role" "role" {
+resource "snowflake_warehouse" "compute_wh" {
+  provider       = snowflake.sysadmin
+  name           = "COMPUTE_WH"
+  warehouse_size = "xsmall"
+  comment        = "Virtual Warehouse for data processing"
+  auto_suspend = 60
+}
+
+resource "snowflake_role" "analyst" {
   provider = snowflake.security_admin
-  name = "TF_DEMO_SVC_ROLE"
+  name     = "ANALYST"
+  comment  = "A data analyst role"
 }
 
-resource "snowflake_database_grant" "grant" {
+resource "snowflake_database_grant" "retail_analyst" {
   provider  = snowflake.security_admin
-  database_name = snowflake_database.db.name
+  database_name = snowflake_database.retail.name
   privilege = "USAGE"
-  roles = [snowflake_role.role.name]
+  roles = [snowflake_role.analyst.name]
   with_grant_option = false
 }
 
-resource "snowflake_schema" "schema" {
-  provider  = snowflake.sysadmin
-  database   = snowflake_database.db.name
-  name   = "TF_DEMO"
-  is_managed = false
+resource "snowflake_schema" "stage" {
+  provider   = snowflake.sysadmin
+  database   = snowflake_database.retail.name
+  name       = "STAGE"
+  is_managed = true
+  comment    = "Staging area"
 }
 
+resource "snowflake_schema" "prod" {
+  provider   = snowflake.sysadmin
+  database   = snowflake_database.retail.name
+  name       = "PROD"
+  is_managed = true
+  comment    = "Production area"
+}
 
-resource "snowflake_schema_grant" "grant" {
+resource "snowflake_schema" "sales" {
+  provider   = snowflake.sysadmin
+  database   = snowflake_database.retail.name
+  name       = "SALES"
+  is_managed = true
+  comment    = "Sales data area"
+}
+
+resource "snowflake_schema_grant" "retail_sales_analyst" {
   provider  = snowflake.security_admin
-  database_name = snowflake_database.db.name
-  schema_name   = snowflake_schema.schema.name
+  database_name = snowflake_database.retail.name
+  schema_name   = snowflake_schema.sales.name
   privilege = "USAGE"
-  roles = [snowflake_role.role.name]
+  roles = [snowflake_role.analyst.name]
   with_grant_option = false
 }
 
-resource "snowflake_warehouse_grant" "grant" {
+resource "snowflake_stage" "mdw_staging" {
+  provider    = snowflake.sysadmin
+  name        = "mdw_staging"
+  url         = "s3://mdw-staging/"
+  database    = snowflake_database.retail.name
+  schema      = snowflake_schema.stage.name
+  credentials = "AWS_KEY_ID='${var.aws_access_key}' AWS_SECRET_KEY='${var.aws_secret_key}'"
+}
+
+
+resource "snowflake_warehouse_grant" "compute_wh_analyst" {
   provider  = snowflake.security_admin
-  warehouse_name= snowflake_warehouse.warehouse.name
+  warehouse_name= snowflake_warehouse.compute_wh.name
   privilege = "USAGE"
-  roles = [snowflake_role.role.name]
+  roles = [snowflake_role.analyst.name]
   with_grant_option = false
 }
 
@@ -72,17 +109,3 @@ resource "tls_private_key" "svc_key" {
   rsa_bits  = 2048
 }
 
-resource "snowflake_user" "user" {
-  provider  = snowflake.security_admin
-  name  = "tf_demo_user"
-  default_warehouse = snowflake_warehouse.warehouse.name
-  default_role  = snowflake_role.role.name
-  default_namespace = "${snowflake_database.db.name}.${snowflake_schema.schema.name}"
-  rsa_public_key= substr(tls_private_key.svc_key.public_key_pem, 27, 398)
-}
-
-resource "snowflake_role_grants" "grants" {
-  provider  = snowflake.security_admin
-  role_name = snowflake_role.role.name
-  users = [snowflake_user.user.name]
-}
