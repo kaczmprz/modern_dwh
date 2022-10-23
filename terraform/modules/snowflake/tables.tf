@@ -10,7 +10,7 @@ locals {
           type     = "varchar(100)"
           nullable = true
         }
-        BIRHT_DATE = {
+        BIRTH_DATE = {
           type     = "date"
           nullable = true
         }
@@ -81,15 +81,15 @@ locals {
         PK = {
           type     = "int"
           nullable = false
-          default = {
-            sequence = snowflake_sequence.sequence["seq_customer"]
-            }
+          default  = {
+            sequence = snowflake_sequence.sequence["seq_customer"].name
+          }
         }
         NAME = {
           type     = "varchar(100)"
           nullable = true
         }
-        BIRHT_DATE = {
+        BIRTH_DATE = {
           type     = "date"
           nullable = true
         }
@@ -128,8 +128,8 @@ locals {
         PK = {
           type     = "int"
           nullable = false
-          default = {
-            sequence = snowflake_sequence.sequence["seq_product"]
+          default  = {
+            sequence = snowflake_sequence.sequence["seq_product"].name
             }
         }
         EAN = {
