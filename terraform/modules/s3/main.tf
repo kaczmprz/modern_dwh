@@ -1,6 +1,5 @@
 resource "aws_s3_bucket" "staging_bucket" {
-  bucket = "mdw-staging"
-
+  bucket = "${var.bucket_name}"
   tags = {
     Name = "stage"
     Environment = "dev"

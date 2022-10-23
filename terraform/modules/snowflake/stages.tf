@@ -1,7 +1,7 @@
 locals {
   stages = {
     "MDW_STAGING" = {
-      url         = "s3://mdw-staging/"
+      url         = "s3://${var.bucket_name}/"
       database    = snowflake_database.database["RETAIL"].name
       schema      = snowflake_schema.schema["STAGE"].name
       credentials = "AWS_KEY_ID='${var.aws_access_key}' AWS_SECRET_KEY='${var.aws_secret_key}'"

@@ -72,6 +72,135 @@ locals {
         }
       }
     }
+    "DIM_CUSTOMER" = {
+      database    = snowflake_database.database["RETAIL"].name
+      schema      = snowflake_schema.schema["PROD"].name
+      comment     = "Production customer table"
+      change_tracking = false
+      columns = {
+        PK = {
+          type     = "int"
+          nullable = false
+          default = {
+            sequence = snowflake_sequence.sequence["seq_customer"]
+            }
+        }
+        NAME = {
+          type     = "varchar(100)"
+          nullable = true
+        }
+        BIRHT_DATE = {
+          type     = "date"
+          nullable = true
+        }
+        TOWN = {
+          type     = "varchar(100)"
+          nullable = true
+        }
+        EMAIL = {
+          type     = "varchar(100)"
+          nullable = true
+        }
+        IS_VALID = {
+          type     = "BOOLEAN"
+          nullable = false
+        }
+        VALID_FROM = {
+          type     = "timestamp"
+          nullable = false
+        }
+        VALID_TO = {
+          type     = "timestamp"
+          nullable = false
+        }
+        MODIFICATION_TS = {
+          type     = "timestamp"
+          nullable = false
+        }
+      }
+    }
+    "DIM_PRODUCT" = {
+      database    = snowflake_database.database["RETAIL"].name
+      schema      = snowflake_schema.schema["PROD"].name
+      comment     = "Production product table"
+      change_tracking = false
+      columns = {
+        PK = {
+          type     = "int"
+          nullable = false
+          default = {
+            sequence = snowflake_sequence.sequence["seq_product"]
+            }
+        }
+        EAN = {
+          type     = "number(38,0)"
+          nullable = true
+        }
+        CATEGORY = {
+          type     = "varchar(100)"
+          nullable = true
+        }
+        NET_PRICE = {
+          type     = "number(38,2)"
+          nullable = true
+        }
+        IS_VALID = {
+          type     = "BOOLEAN"
+          nullable = false
+        }
+        VALID_FROM = {
+          type     = "timestamp"
+          nullable = false
+        }
+        VALID_TO = {
+          type     = "timestamp"
+          nullable = false
+        }
+        MODIFICATION_TS = {
+          type     = "timestamp"
+          nullable = false
+        }
+      }
+    }
+    "DIM_SHOPS" = {
+      database    = snowflake_database.database["RETAIL"].name
+      schema      = snowflake_schema.schema["PROD"].name
+      comment     = "Production shops table"
+      change_tracking = false
+      columns = {
+        PK = {
+          type     = "int"
+          nullable = false
+          default = {
+            sequence = snowflake_sequence.sequence["seq_shops"]
+            }
+        }
+        ID = {
+          type     = "number(38,0)"
+          nullable = true
+        }
+        CITY = {
+          type     = "varchar(100)"
+          nullable = true
+        }
+        IS_VALID = {
+          type     = "BOOLEAN"
+          nullable = false
+        }
+        VALID_FROM = {
+          type     = "timestamp"
+          nullable = false
+        }
+        VALID_TO = {
+          type     = "timestamp"
+          nullable = false
+        }
+        MODIFICATION_TS = {
+          type     = "timestamp"
+          nullable = false
+        }
+      }
+    }
   }
 }
 
