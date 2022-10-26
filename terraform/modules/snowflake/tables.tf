@@ -22,6 +22,14 @@ locals {
           type     = "varchar(100)"
           nullable = true
         }
+        FILENAME = {
+          type     = "varchar(100)"
+          nullable = true
+        }
+        LOAD_TS = {
+          type     = "timestamp"
+          nullable = true
+        }
       }
     }
     "PRODUCT" = {
@@ -42,6 +50,14 @@ locals {
           type     = "number(38,2)"
           nullable = true
         }
+        FILENAME = {
+          type     = "varchar(100)"
+          nullable = true
+        }
+        LOAD_TS = {
+          type     = "timestamp"
+          nullable = true
+        }
       }
     }
     "SHOPS" = {
@@ -56,6 +72,14 @@ locals {
         }
         CITY = {
           type     = "varchar(100)"
+          nullable = true
+        }
+        FILENAME = {
+          type     = "varchar(100)"
+          nullable = true
+        }
+        LOAD_TS = {
+          type     = "timestamp"
           nullable = true
         }
       }
@@ -81,9 +105,6 @@ locals {
         PK = {
           type     = "int"
           nullable = false
-          default  = {
-            sequence = snowflake_sequence.sequence["seq_customer"].name
-          }
         }
         NAME = {
           type     = "varchar(100)"
@@ -117,6 +138,10 @@ locals {
           type     = "timestamp"
           nullable = false
         }
+        HASH = {
+          type     = "bigint"
+          nullable = true
+        }
       }
     }
     "DIM_PRODUCT" = {
@@ -128,9 +153,6 @@ locals {
         PK = {
           type     = "int"
           nullable = false
-          default  = {
-            sequence = snowflake_sequence.sequence["seq_product"].name
-            }
         }
         EAN = {
           type     = "number(38,0)"
@@ -160,6 +182,10 @@ locals {
           type     = "timestamp"
           nullable = false
         }
+        HASH = {
+          type     = "bigint"
+          nullable = true
+        }
       }
     }
     "DIM_SHOPS" = {
@@ -171,9 +197,6 @@ locals {
         PK = {
           type     = "int"
           nullable = false
-          default = {
-            sequence = snowflake_sequence.sequence["seq_shops"]
-            }
         }
         ID = {
           type     = "number(38,0)"
@@ -198,6 +221,10 @@ locals {
         MODIFICATION_TS = {
           type     = "timestamp"
           nullable = false
+        }
+        HASH = {
+          type     = "bigint"
+          nullable = true
         }
       }
     }

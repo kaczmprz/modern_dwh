@@ -11,13 +11,18 @@ def etl_load_dim(table: str, columns: list, natural_key: str, stage: str, path: 
     columns_ = ", ".join(columns)
     stage_columns = ["replace($" + str(i+1) + ",'\"','')" for i in range(len(columns))]
     stage_columns_ = ", ".join(stage_columns)
-    load_stage_table = f"insert into stage.{table} ({columns_}) select {stage_columns_} from @{stage}/{path}/%(year)s/%(month)s/%(day)s"
+
+    load_stage_table = f"insert into stage.{table} ({columns_}, filename, load_ts) select {stage_columns_}, metadata$filename, current_timestamp" \
+                       f" from @{stage}/{path}/%(year)s/%(month)s/%(day)s"
+
     load_prod_table = f"merge into prod.dim_{table} p using stage.{table} s on p.{natural_key}=s.{natural_key} " \
-                      f"when not matched then insert (pk, {columns_}, is_valid, valid_from, valid_to, modification_ts) values (prod.\"seq_{table}\".nextval, {columns_}, true, current_timestamp, '9999-12-31', current_timestamp)"
+                      f"when not matched then insert (pk, {columns_}, is_valid, valid_from, valid_to, modification_ts) " \
+                      f"values (prod.\"seq_{table}\".nextval, {columns_}, true, current_timestamp, '9999-12-31', current_timestamp)" \
+                      f"when matched then "
     result = snowflake_multiquery(
-        [load_stage_table, load_prod_table],
+        [load_stage_table],
         snowflake_connector,
-        params={"day": 22,
+        params={"day": 26,
                 "month": 10,
                 "year": 2022},
         as_transaction=True
