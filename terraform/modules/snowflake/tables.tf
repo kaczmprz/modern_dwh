@@ -7,27 +7,27 @@ locals {
       change_tracking = false
       columns = {
         NAME = {
-          type     = "varchar(100)"
+          type     = "VARCHAR(100)"
           nullable = true
         }
         BIRTH_DATE = {
-          type     = "date"
+          type     = "DATE"
           nullable = true
         }
         TOWN = {
-          type     = "varchar(100)"
+          type     = "VARCHAR(100)"
           nullable = true
         }
         EMAIL = {
-          type     = "varchar(100)"
+          type     = "VARCHAR(100)"
           nullable = true
         }
         FILENAME = {
-          type     = "varchar(100)"
+          type     = "VARCHAR(100)"
           nullable = true
         }
         LOAD_TS = {
-          type     = "timestamp"
+          type     = "TIMESTAMP_NTZ(9)"
           nullable = true
         }
       }
@@ -39,23 +39,23 @@ locals {
       change_tracking = false
       columns = {
         EAN = {
-          type     = "number(38,0)"
+          type     = "NUMBER(38,0)"
           nullable = true
         }
         CATEGORY = {
-          type     = "varchar(100)"
+          type     = "VARCHAR(100)"
           nullable = true
         }
         NET_PRICE = {
-          type     = "number(38,2)"
+          type     = "NUMBER(38,2)"
           nullable = true
         }
         FILENAME = {
-          type     = "varchar(100)"
+          type     = "VARCHAR(100)"
           nullable = true
         }
         LOAD_TS = {
-          type     = "timestamp"
+          type     = "TIMESTAMP_NTZ(9)"
           nullable = true
         }
       }
@@ -67,19 +67,19 @@ locals {
       change_tracking = false
       columns = {
         ID = {
-          type     = "number(38,0)"
+          type     = "NUMBER(38,0)"
           nullable = true
         }
         CITY = {
-          type     = "varchar(100)"
+          type     = "VARCHAR(100)"
           nullable = true
         }
         FILENAME = {
-          type     = "varchar(100)"
+          type     = "VARCHAR(100)"
           nullable = true
         }
         LOAD_TS = {
-          type     = "timestamp"
+          type     = "TIMESTAMP_NTZ(9)"
           nullable = true
         }
       }
@@ -103,23 +103,23 @@ locals {
       change_tracking = false
       columns = {
         PK = {
-          type     = "int"
+          type     = "NUMBER(38,0)"
           nullable = false
         }
         NAME = {
-          type     = "varchar(100)"
+          type     = "VARCHAR(100)"
           nullable = true
         }
         BIRTH_DATE = {
-          type     = "date"
+          type     = "DATE"
           nullable = true
         }
         TOWN = {
-          type     = "varchar(100)"
+          type     = "VARCHAR(100)"
           nullable = true
         }
         EMAIL = {
-          type     = "varchar(100)"
+          type     = "VARCHAR(100)"
           nullable = true
         }
         IS_VALID = {
@@ -127,19 +127,19 @@ locals {
           nullable = false
         }
         VALID_FROM = {
-          type     = "timestamp"
+          type     = "TIMESTAMP_NTZ(9)"
           nullable = false
         }
         VALID_TO = {
-          type     = "timestamp"
+          type     = "TIMESTAMP_NTZ(9)"
           nullable = false
         }
         MODIFICATION_TS = {
-          type     = "timestamp"
+          type     = "TIMESTAMP_NTZ(9)"
           nullable = false
         }
         HASH = {
-          type     = "bigint"
+          type     = "NUMBER(38,0)"
           nullable = true
         }
       }
@@ -151,19 +151,19 @@ locals {
       change_tracking = false
       columns = {
         PK = {
-          type     = "int"
+          type     = "NUMBER(38,0)"
           nullable = false
         }
         EAN = {
-          type     = "number(38,0)"
+          type     = "NUMBER(38,0)"
           nullable = true
         }
         CATEGORY = {
-          type     = "varchar(100)"
+          type     = "VARCHAR(100)"
           nullable = true
         }
         NET_PRICE = {
-          type     = "number(38,2)"
+          type     = "NUMBER(38,2)"
           nullable = true
         }
         IS_VALID = {
@@ -171,19 +171,19 @@ locals {
           nullable = false
         }
         VALID_FROM = {
-          type     = "timestamp"
+          type     = "TIMESTAMP_NTZ(9)"
           nullable = false
         }
         VALID_TO = {
-          type     = "timestamp"
+          type     = "TIMESTAMP_NTZ(9)"
           nullable = false
         }
         MODIFICATION_TS = {
-          type     = "timestamp"
+          type     = "TIMESTAMP_NTZ(9)"
           nullable = false
         }
         HASH = {
-          type     = "bigint"
+          type     = "NUMBER(38,0)"
           nullable = true
         }
       }
@@ -195,15 +195,15 @@ locals {
       change_tracking = false
       columns = {
         PK = {
-          type     = "int"
+          type     = "NUMBER(38,0)"
           nullable = false
         }
         ID = {
-          type     = "number(38,0)"
+          type     = "NUMBER(38,0)"
           nullable = true
         }
         CITY = {
-          type     = "varchar(100)"
+          type     = "VARCHAR(100)"
           nullable = true
         }
         IS_VALID = {
@@ -211,19 +211,19 @@ locals {
           nullable = false
         }
         VALID_FROM = {
-          type     = "timestamp"
+          type     = "TIMESTAMP_NTZ(9)"
           nullable = false
         }
         VALID_TO = {
-          type     = "timestamp"
+          type     = "TIMESTAMP_NTZ(9)"
           nullable = false
         }
         MODIFICATION_TS = {
-          type     = "timestamp"
+          type     = "TIMESTAMP_NTZ(9)"
           nullable = false
         }
         HASH = {
-          type     = "bigint"
+          type     = "NUMBER(38,0)"
           nullable = true
         }
       }
