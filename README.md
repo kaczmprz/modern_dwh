@@ -11,7 +11,7 @@ This project is proof of concept how you can use Snowflake, Terraform, Prefect a
 1. Create account in AWS https://aws.amazon.com/
 2. Create account in Snowflake https://signup.snowflake.com/
 3. Configure connection with AWS CLI https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html
-4. Crete technical user for Terraform in Snowflake. 
+4. Create technical user for Terraform in Snowflake. 
     * Go to ~/.ssh catalog and create private key and copy public key
     ```
     cd ~/.ssh
@@ -27,4 +27,20 @@ This project is proof of concept how you can use Snowflake, Terraform, Prefect a
     MUST_CHANGE_PASSWORD=FALSE;
     GRANT ROLE SYSADMIN TO USER "tf-snow";
     GRANT ROLE SECURITYADMIN TO USER "tf-snow";
+    ```
+5. Download Terraform https://www.terraform.io/downloads
+6. Export enviromental variables
+    * Linux
+    ```
+    $ export SNOWFLAKE_USER="tf-snow"
+    $ export SNOWFLAKE_PRIVATE_KEY_PATH="~/.ssh/snowflake_tf_snow_key.p8"
+    $ export SNOWFLAKE_ACCOUNT="<<YOUR_ACCOUNT_LOCATOR>>"
+    $ export SNOWFLAKE_REGION="<<YOUR_REGION_HERE>>"
+    ```
+    * Windows
+    ```
+    SET SNOWFLAKE_USER=tf-snow
+    SET SNOWFLAKE_PRIVATE_KEY_PATH=C:\Users\<<YOUR_USER>>\.ssh\snowflake_tf_snow_key.p8
+    SET SNOWFLAKE_ACCOUNT="<<YOUR_ACCOUNT_LOCATOR>>"
+    SET SNOWFLAKE_REGION="<<YOUR_REGION_HERE>>"
     ```
