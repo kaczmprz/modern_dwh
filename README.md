@@ -2,3 +2,5 @@
 
 This project is proof of concept how you can use Snowflake, Terraform, Prefect and AWS S3 bucket together to create your own data warehouse. 
 
+
+![architecture drawio](https://user-images.githubusercontent.com/111633053/200112366-d756d4d8-9954-4358-9970-1472bf122ce9.png)
