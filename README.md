@@ -12,20 +12,20 @@ This project is proof of concept how you can use Snowflake, Terraform, Prefect a
 2. Create account in Snowflake https://signup.snowflake.com/
 3. Configure connection with AWS CLI https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html
 4. Crete technical user for Terraform in Snowflake. 
-* Go to ~/.ssh catalog and create private key and copy public key
-  ```
-  cd ~/.ssh
-  openssl rsa -in snowflake_tf_snow_key.p8 -pubout -out snowflake_tf_snow_key.pub
-  clip < ~/.ssh/snowflake_tf_snow_key.pub
-  ```
-* Go to Snowflake and create user and paste public key
-  ```
-  USE ROLE SECURITYADMIN;
-  CREATE USER "tf-snow" 
-  RSA_PUBLIC_KEY='<<paste here RSA_PUBLIC_KEY>>' 
-  DEFAULT_ROLE=PUBLIC 
-  MUST_CHANGE_PASSWORD=FALSE;
-  GRANT ROLE SYSADMIN TO USER "tf-snow";
-  GRANT ROLE SECURITYADMIN TO USER "tf-snow";
+  * Go to ~/.ssh catalog and create private key and copy public key
+    ```
+    cd ~/.ssh
+    openssl rsa -in snowflake_tf_snow_key.p8 -pubout -out snowflake_tf_snow_key.pub
+    clip < ~/.ssh/snowflake_tf_snow_key.pub
+    ```
+  * Go to Snowflake and create user and paste public key
+    ```
+    USE ROLE SECURITYADMIN;
+    CREATE USER "tf-snow" 
+    RSA_PUBLIC_KEY='<<paste here RSA_PUBLIC_KEY>>' 
+    DEFAULT_ROLE=PUBLIC 
+    MUST_CHANGE_PASSWORD=FALSE;
+    GRANT ROLE SYSADMIN TO USER "tf-snow";
+    GRANT ROLE SECURITYADMIN TO USER "tf-snow";
 
-  ```
+    ```
