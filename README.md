@@ -44,3 +44,23 @@ This project is proof of concept how you can use Snowflake, Terraform, Prefect a
     SET SNOWFLAKE_ACCOUNT="<<YOUR_ACCOUNT_LOCATOR>>"
     SET SNOWFLAKE_REGION="<<YOUR_REGION_HERE>>"
     ```
+7. Create virtualenv and clone this repository
+    ```
+    python -m venv myenv
+    cd myenv
+    git clone https://github.com/kaczmprz/modern_dwh.git
+    ```
+8. Activate virtualenv and install packages from requirements.txt
+    ```
+    pip install -r requirements.txt
+    ```
+9. Add variable.tf files 
+10. Init terraform project in modern_dwh/terraform/production/ path and
+    ```
+    terraform init
+    ```
+11. Run terraform plan & apply commands
+    ```
+    terraform plan
+    terraform apply
+    ```
