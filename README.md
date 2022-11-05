@@ -12,6 +12,7 @@ This project is proof of concept how you can use Snowflake, Terraform, Prefect a
 2. Create account in Snowflake https://signup.snowflake.com/
 3. Configure connection with AWS CLI https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html
 4. Crete technical user for Terraform in Snowflake. 
+
   4.1. Go to ~/.ssh catalog and create private key and copy public key
   ```
   cd ~/.ssh
