@@ -10,3 +10,4 @@ This project is proof of concept how you can use Snowflake, Terraform, Prefect a
 
 1. Create account in AWS https://aws.amazon.com/
 2. Create account in Snowflake https://signup.snowflake.com/
+3. Configure connection with AWS CLI https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html
