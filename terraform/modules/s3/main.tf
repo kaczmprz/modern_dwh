@@ -11,61 +11,72 @@ resource "aws_s3_bucket_acl" "staging_bucket_acl" {
   acl    = "private"
 }
 
-/*
-resource "aws_s3_bucket_policy" "allow_access_from_snowflake" {
-  bucket = aws_s3_bucket.staging_bucket.id
-  policy = <<POLICY
-  {
+resource "aws_iam_policy" "snowflake_access2" {
+  name        = "snowflake_access2"
+  path        = "/"
+  description = "Access for Snowflake"
+  policy = jsonencode({
     "Version": "2012-10-17",
     "Statement": [
-      {
-        "Effect": "Allow",
-        "Principal": "*",
-        "Action": [
-          "s3:GetObject",
-          "s3:GetObjectVersion"
-        ],
-        "Resource": [
-          "${aws_s3_bucket.staging_bucket.arn}",
-          "${aws_s3_bucket.staging_bucket.arn}/*"
-          ]
-      },
-      {
-        "Effect": "Allow",
-        "Principal": "*",
-        "Action": [
-          "s3:ListBucket",
-          "s3:GetBucketLocation"
-        ],
-        "Resource": [
-          "${aws_s3_bucket.staging_bucket.arn}",
-          "${aws_s3_bucket.staging_bucket.arn}/*"
-          ]
-      }
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetObject",
+                "s3:GetObjectVersion"
+            ],
+            "Resource": "arn:aws:s3:::${var.bucket_name}/*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:ListBucket",
+                "s3:GetBucketLocation"
+            ],
+            "Resource": "arn:aws:s3:::${var.bucket_name}",
+            "Condition": {
+                "StringLike": {
+                    "s3:prefix": [
+                        "*"
+                    ]
+                }
+            }
+        }
     ]
-  }
-  POLICY
+  })
 }
-*/
 
-/*
-resource "aws_sqs_queue" "queue" {
-  name                      = "s3-event-notification-queue"
-  delay_seconds             = 10
-  max_message_size          = 2048
-  message_retention_seconds = 60
-  receive_wait_time_seconds = 10
+resource "aws_iam_role" "mysnowflakerole2" {
+  name                = "mysnowflakerole2"
+  assume_role_policy  = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::230814635691:user/jlo20000-s"
+            },
+            "Action": "sts:AssumeRole",
+            "Condition": {
+                "StringEquals": {
+                    "sts:ExternalId": "AT21246_SFCRole=2_WwmlUrbHjl2UvQYlvlE2+sq0rzI="
+                }
+            }
+        }
+    ]
+})
+  managed_policy_arns = [aws_iam_policy.snowflake_access2.arn]
 }
-*/
-/*
-resource "aws_s3_bucket_notification" "staging_bucket_notification" {
+
+
+
+resource "aws_s3_bucket_notification" "orders2" {
   bucket = aws_s3_bucket.staging_bucket.id
 
   queue {
-    queue_arn     = aws_sqs_queue.queue.arn
+    queue_arn     = "arn:aws:sqs:eu-central-1:230814635691:sf-snowpipe-AIDATLPM722V2ACBR7BQX-iRwsYJrDLQDAw_SJn31G_A"
     events        = ["s3:ObjectCreated:*"]
     filter_prefix = "orders/"
     filter_suffix = ".json"
   }
 }
-*/

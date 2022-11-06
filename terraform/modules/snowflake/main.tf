@@ -17,6 +17,11 @@ provider "snowflake" {
   role  = "SECURITYADMIN"
 }
 
+provider "snowflake" {
+  alias = "account_admin"
+  role  = "ACCOUNTADMIN"
+}
+
 resource "tls_private_key" "svc_key" {
   algorithm = "RSA"
   rsa_bits  = 2048
