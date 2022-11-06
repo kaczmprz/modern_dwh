@@ -4,6 +4,7 @@ import json
 import logging
 import boto3
 from datetime import datetime
+from time import sleep
 from faker import Faker
 from collections import namedtuple
 from os.path import dirname, abspath, join
@@ -33,29 +34,26 @@ Shop = namedtuple('Shop', 'id city')
 Order = namedtuple('Order', 'id datetime customer product shop')
 
 
-def generate_customers(number):
+def generate_customers(number: int):
     customers = [Customer(fake.name(), fake.date(end_datetime='-20y'), fake.city(), fake.free_email()) for _ in range(number)]
     return customers
 
 
-def generate_products(number):
+def generate_products(number: int):
     products = [Product(fake.ean8(), fake.pystr(min_chars=4, max_chars=4).upper(),
                         fake.pyfloat(positive=True, max_value=100, right_digits=2)) for _ in range(number)]
     return products
 
 
-def generate_shops(number):
+def generate_shops(number: int):
     shops = [Shop(id_+1, fake.city()) for id_ in range(number)]
     return shops
 
 
-def generate_orders(number):
-    customers = generate_customers(200)
-    products = generate_products(100)
-    shops = generate_shops(15)
+def generate_orders(number: int, customers: list, products: list, shops: list):
     orders = [Order(id_+1, fake.date(end_datetime='-1y'), random.choice(customers).email,
                     random.choice(products).ean, random.choice(shops).id) for id_ in range(number)]
-    return customers, products, shops, orders
+    return orders
 
 
 def write_to_csv(data, filename):
@@ -93,12 +91,18 @@ def send_to_s3(filename, file_format):
 
 
 if __name__=="__main__":
-    customers, products, shops, orders = generate_orders(200)
+    customers = generate_customers(200)
+    products = generate_products(100)
+    shops = generate_shops(15)
     write_to_csv(customers, 'customers')
     write_to_csv(products, 'products')
     write_to_csv(shops, 'shops')
-    write_json(orders, 'orders')
     send_to_s3('customers', 'csv')
     send_to_s3('products', 'csv')
     send_to_s3('shops', 'csv')
-    send_to_s3('orders', 'json')
+
+    while True:
+        orders = generate_orders(200, customers, products, shops)
+        write_json(orders, 'orders')
+        send_to_s3('orders', 'json')
+        sleep(60)
