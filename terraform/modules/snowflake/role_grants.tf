@@ -4,6 +4,7 @@ resource "snowflake_role_grants" "sales_superuser_grants" {
   roles = [
     "SYSADMIN",
   ]
+  depends_on = [snowflake_role.role]
 }
 
 resource "snowflake_role_grants" "finance_superuser_grants" {
@@ -12,6 +13,7 @@ resource "snowflake_role_grants" "finance_superuser_grants" {
   roles = [
     "SYSADMIN",
   ]
+  depends_on = [snowflake_role.role]
 }
 
 resource "snowflake_role_grants" "warehouse_superuser_grants" {
@@ -20,6 +22,7 @@ resource "snowflake_role_grants" "warehouse_superuser_grants" {
   roles = [
     "SYSADMIN",
   ]
+  depends_on = [snowflake_role.role]
 }
 
 resource "snowflake_role_grants" "sales_analyst_grants" {
@@ -28,6 +31,7 @@ resource "snowflake_role_grants" "sales_analyst_grants" {
   roles = [
     "SYSADMIN","SALES_SUPERUSER"
   ]
+  depends_on = [snowflake_role.role]
 }
 
 resource "snowflake_role_grants" "finance_analyst_grants" {
@@ -36,6 +40,7 @@ resource "snowflake_role_grants" "finance_analyst_grants" {
   roles = [
     "SYSADMIN","FINANCE_SUPERUSER"
   ]
+  depends_on = [snowflake_role.role]
 }
 
 resource "snowflake_role_grants" "warehouse_analyst_grants" {
@@ -44,4 +49,5 @@ resource "snowflake_role_grants" "warehouse_analyst_grants" {
   roles = [
     "SYSADMIN","WAREHOUSE_SUPERUSER"
   ]
+  depends_on = [snowflake_role.role]
 }

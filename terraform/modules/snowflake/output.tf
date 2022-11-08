@@ -8,13 +8,16 @@ output "snowflake_svc_private_key" {
 }
 
 output "snowflake_integration_storage_aws_iam_user_arn" {
-    value = snowflake_storage_integration.s32.storage_aws_iam_user_arn
+    value = snowflake_storage_integration.s3.storage_aws_iam_user_arn
+    sensitive = true
 }
 
 output "snowflake_integration_storage_aws_external_id" {
-    value = snowflake_storage_integration.s32.storage_aws_external_id
+    value = snowflake_storage_integration.s3.storage_aws_external_id
+    sensitive = true
 }
 
 output "snowflake_pipe_notification_channel" {
-    value = snowflake_pipe.pipe2.notification_channel
+    value = snowflake_pipe.pipe_orders.notification_channel
+    sensitive = true
 }

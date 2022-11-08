@@ -1,6 +1,6 @@
-resource "snowflake_storage_integration" "s32" {
+resource "snowflake_storage_integration" "s3" {
   provider = snowflake.account_admin
-  name    = "s32"
+  name    = "s3"
   comment = "A storage integration."
   type    = "EXTERNAL_STAGE"
   enabled = true

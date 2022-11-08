@@ -16,7 +16,6 @@ module "s3" {
     source = "../modules/s3"
     snowflake_pipe_notification_channel = module.snowflake.snowflake_pipe_notification_channel
     bucket_name = var.bucket_name
-    depends_on = [module.snowflake.snowflake_pipe]
 }
 
 module "snowflake" {
