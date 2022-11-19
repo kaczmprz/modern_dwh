@@ -15,6 +15,16 @@ locals {
       comment    = "Sales data area"
       is_managed = true
     }
+    "FINANCE" = {
+      database   = snowflake_database.database["RETAIL"].name
+      comment    = "Finance data area"
+      is_managed = true
+    }
+    "WAREHOUSE" = {
+      database   = snowflake_database.database["RETAIL"].name
+      comment    = "Warehouse data area"
+      is_managed = true
+    }
   }
 }
 
