@@ -15,7 +15,7 @@ logger.setLevel(logging.DEBUG)
 
 # create console handler and set level to debug
 ch = logging.StreamHandler()
-ch.setLevel(logging.WARNING)
+ch.setLevel(logging.INFO)
 
 # create formatter
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -36,23 +36,27 @@ Order = namedtuple('Order', 'id datetime customer product shop')
 
 def generate_customers(number: int):
     customers = [Customer(fake.name(), fake.date(end_datetime='-20y'), fake.city(), fake.free_email()) for _ in range(number)]
+    logger.info('customers data generated')
     return customers
 
 
 def generate_products(number: int):
     products = [Product(fake.ean8(), fake.pystr(min_chars=4, max_chars=4).upper(),
                         fake.pyfloat(positive=True, max_value=100, right_digits=2)) for _ in range(number)]
+    logger.info('products data generated')
     return products
 
 
 def generate_shops(number: int):
     shops = [Shop(id_+1, fake.city()) for id_ in range(number)]
+    logger.info('shops data generated')
     return shops
 
 
 def generate_orders(number: int, customers: list, products: list, shops: list):
     orders = [Order(id_+1, fake.date(end_datetime='-1y'), random.choice(customers).email,
                     random.choice(products).ean, random.choice(shops).id) for id_ in range(number)]
+    logger.info('orders data generated')
     return orders
 
 
@@ -63,6 +67,7 @@ def write_to_csv(data, filename):
     with open(path_file, 'w+', encoding='utf8', newline ='') as file:
         wr = csv.writer(file, quoting=csv.QUOTE_ALL)
         wr.writerows(list_)
+    logger.info(f'{filename} data saved to csv file')
     return 0
 
 
@@ -72,6 +77,7 @@ def write_json(data, filename):
     path_file = join(join(dir_, 'data'), '{filename}.json'.format(filename=filename))
     with open(path_file, 'w', encoding='utf8') as file:
         json.dump(list_, file, ensure_ascii=False)
+    logger.info(f'{filename} data saved to json file')
     return 0
 
 
@@ -85,6 +91,7 @@ def send_to_s3(filename, file_format):
         path_file = join(join(dir_, 'data'), '{filename}.{fileformat}'.format(filename=filename, fileformat=file_format))
         s3.upload_file(path_file, 'mdw-staging', '{filename}/{year}/{month}/{day}/{filename}_{now_}.{file_format}'.format(
             filename=filename, year=year, month=month, day=day, now_=now_, file_format=file_format))
+        logger.info(f'{filename} data uploaded to s3 bucket')
         return 0
     except Exception as e:
         logger.warning('{e}'.format(e=e))
