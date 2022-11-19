@@ -5,7 +5,7 @@ provider "aws" {
 }
 
 module "iam" {
-    source = "../modules/iam"
+    source = "./modules/iam"
     snowflake_integration_storage_aws_iam_user_arn = module.snowflake.snowflake_integration_storage_aws_iam_user_arn
     snowflake_integration_storage_aws_external_id = module.snowflake.snowflake_integration_storage_aws_external_id
     bucket_name = var.bucket_name
@@ -13,13 +13,13 @@ module "iam" {
 }
 
 module "s3" {
-    source = "../modules/s3"
+    source = "./modules/s3"
     snowflake_pipe_notification_channel = module.snowflake.snowflake_pipe_notification_channel
     bucket_name = var.bucket_name
 }
 
 module "snowflake" {
-    source = "../modules/snowflake"
+    source = "./modules/snowflake"
     bucket_name = var.bucket_name
     region = var.region
     aws_access_key = var.aws_access_key

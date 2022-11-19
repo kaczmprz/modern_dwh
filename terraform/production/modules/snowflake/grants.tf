@@ -9,6 +9,7 @@ resource "snowflake_database_grant" "retail_analyst" {
                       snowflake_role.role["FINANCE_SUPERUSER"].name,
                       snowflake_role.role["WAREHOUSE_SUPERUSER"].name,
                       ]
+  shares            = [snowflake_share.share_company_name_x.name]
   with_grant_option = false
   depends_on        = [snowflake_database.database, snowflake_role.role]
 }
@@ -19,6 +20,7 @@ resource "snowflake_schema_grant" "retail_sales_analyst" {
   schema_name       = snowflake_schema.schema["SALES"].name
   privilege         = "USAGE"
   roles             = [snowflake_role.role["SALES_ANALYST"].name]
+  shares            = [snowflake_share.share_company_name_x.name]
   with_grant_option = false
   depends_on        = [snowflake_database.database, snowflake_schema.schema, snowflake_role.role]
 }
@@ -46,6 +48,17 @@ resource "snowflake_integration_grant" "s3_integration_sysadmin" {
   with_grant_option = false
   depends_on        = [snowflake_storage_integration.s3]
 }
+
+resource "snowflake_table_grant" "share_company_name_x_grant_table" {
+  provider          = snowflake.account_admin
+  database_name     = snowflake_database.database["RETAIL"].name
+  schema_name       = snowflake_schema.schema["PROD"].name
+  table_name        = snowflake_table.table["DIM_PRODUCT"].name
+  privilege         = "SELECT"
+  shares            = [snowflake_share.share_company_name_x.name]
+}
+
+
 /*
 resource "snowflake_stage_grant" "stage_orders_sysadmin" {
   provider          = snowflake.security_admin

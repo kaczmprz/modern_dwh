@@ -10,7 +10,6 @@ __pycache__/
 /terraform/production/variable.tf
 terraform/production/.*
 terraform/production/terraform.*
-terraform/*/*/variable.tf
 
 # Distribution / packaging
 .Python
