@@ -1,0 +1,142 @@
+version: "1.0"
+
+# ==========================================
+# Databases
+# ==========================================
+databases:
+  # Production
+    - retail:
+        shared: no
+    - snowflake:
+        shared: yes
+
+# ==========================================
+# Roles
+# ==========================================
+roles:
+    ## Admin Roles
+    - accountadmin:
+        warehouses:
+            - public_wh
+        member_of:
+            - securityadmin
+            - sysadmin
+
+    - securityadmin:
+        warehouses:
+            - public_wh
+        member_of:
+            - useradmin
+
+    - useradmin:
+        warehouses:
+            - public_wh
+
+    - sysadmin:
+        member_of:
+          include:
+            - "*"
+          exclude:
+            - accountadmin
+            - securityadmin
+            - useradmin
+        warehouses:
+            - public_wh
+        privileges:
+            databases:
+                read:
+                    - retail
+                    - snowflake
+                write:
+                    - retail
+                    - snowflake
+            schemas:
+                read:
+                    - retail.*
+                    - snowflake.*
+                write:
+                    - retail.*
+            tables:
+                read:
+                    - retail.*.*
+                    - snowflake.*.*
+                write:
+                    - retail.*.*
+
+    - sales_superuser:
+        warehouses:
+            - compute_wh
+        privileges:
+            databases:
+                read:
+                  - retail
+                write:
+                  - retail
+            schemas:
+                read:
+                  - retail.sales
+                write:
+                  - retail.sales
+            tables:
+                read:
+                  - retail.sales.*
+                write:
+                  - retail.sales.*
+
+    - sales_analyst:
+        member_of:
+            - sales_superuser
+        warehouses:
+            - compute_wh
+        privileges:
+            databases:
+                read:
+                  - retail
+            schemas:
+                read:
+                  - retail.sales
+            tables:
+                read:
+                  - retail.sales.*
+
+    - finance_superuser:
+        warehouses:
+            - compute_wh
+        privileges:
+            databases:
+                read:
+                  - retail
+                write:
+                  - retail
+            schemas:
+                read:
+                  - retail.finance
+                write:
+                  - retail.finance
+            tables:
+                read:
+                  - retail.finance.*
+                write:
+                  - retail.finance.*
+
+# ==========================================
+# Users
+# ==========================================
+users:
+
+    - analyst1:
+        can_login: yes
+        member_of:
+            - sales_analyst
+
+# ==========================================
+# Warehouses
+# ==========================================
+warehouses:
+    - public_wh:
+        size: x-small
+
+    - compute_wh:
+        size: x-small
+
+
