@@ -7,7 +7,6 @@ __pycache__/
 *.so
 
 # Terraform
-/terraform/production/variable.tf
 terraform/production/.*
 terraform/production/terraform.*
 

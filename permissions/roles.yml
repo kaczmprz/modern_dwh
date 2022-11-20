@@ -62,8 +62,10 @@ roles:
                     - snowflake.*.*
                 write:
                     - retail.*.*
-
+    ## User Roles
     - sales_superuser:
+        member_of:
+              - sales_analyst
         warehouses:
             - compute_wh
         privileges:
@@ -84,8 +86,6 @@ roles:
                   - retail.sales.*
 
     - sales_analyst:
-        member_of:
-            - sales_superuser
         warehouses:
             - compute_wh
         privileges:
@@ -100,6 +100,8 @@ roles:
                   - retail.sales.*
 
     - finance_superuser:
+        member_of:
+              - finance_analyst
         warehouses:
             - compute_wh
         privileges:
@@ -119,12 +121,77 @@ roles:
                 write:
                   - retail.finance.*
 
+    - finance_analyst:
+        warehouses:
+            - compute_wh
+        privileges:
+            databases:
+                read:
+                  - retail
+            schemas:
+                read:
+                  - retail.finance
+            tables:
+                read:
+                  - retail.finance.*
+
+    - warehouse_superuser:
+        member_of:
+              - warehouse_analyst
+        warehouses:
+            - compute_wh
+        privileges:
+            databases:
+                read:
+                  - retail
+                write:
+                  - retail
+            schemas:
+                read:
+                  - retail.warehouse
+                write:
+                  - retail.warehouse
+            tables:
+                read:
+                  - retail.warehouse.*
+                write:
+                  - retail.warehouse.*
+
+    - warehouse_analyst:
+        warehouses:
+            - compute_wh
+        privileges:
+            databases:
+                read:
+                  - retail
+            schemas:
+                read:
+                  - retail.warehouse
+            tables:
+                read:
+                  - retail.warehouse.*
 # ==========================================
 # Users
 # ==========================================
 users:
 
-    - analyst1:
+    - Snowflake User1:
+        can_login: yes
+        member_of:
+            - sales_analyst
+            - finance_analyst
+    - Snowflake User2:
+        can_login: yes
+        member_of:
+            - sales_analyst
+            - finance_superuser
+            - warehouse_superuser
+    - Snowflake User3:
+        can_login: yes
+        member_of:
+            - sales_analyst
+            - warehouse_superuser
+    - Snowflake User4:
         can_login: yes
         member_of:
             - sales_analyst

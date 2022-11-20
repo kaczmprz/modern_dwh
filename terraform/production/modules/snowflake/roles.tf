@@ -23,7 +23,7 @@ locals {
 
 resource "snowflake_role" "role" {
   for_each   = local.roles
-  provider   = snowflake.security_admin
+  provider   = snowflake.user_admin
   name       = each.key
   comment    = each.value.comment
 }

@@ -109,7 +109,7 @@ if __name__=="__main__":
     send_to_s3('shops', 'csv')
 
     while True:
-        orders = generate_orders(200, customers, products, shops)
+        orders = generate_orders(2000, customers, products, shops)
         write_json(orders, 'orders')
         send_to_s3('orders', 'json')
-        sleep(60)
+        sleep(4)
