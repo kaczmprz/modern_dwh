@@ -9,6 +9,7 @@ module "iam" {
     snowflake_integration_storage_aws_iam_user_arn = module.snowflake.snowflake_integration_storage_aws_iam_user_arn
     snowflake_integration_storage_aws_external_id = module.snowflake.snowflake_integration_storage_aws_external_id
     bucket_name = var.bucket_name
+    aws_iam_snowflakerole_name = var.aws_iam_snowflakerole_name
     depends_on = [module.s3.aws_s3_bucket]
 }
 
@@ -24,5 +25,5 @@ module "snowflake" {
     region = var.region
     aws_access_key = var.aws_access_key
     aws_secret_key = var.aws_secret_key
-    aws_storage_aws_role_arn = var.aws_storage_aws_role_arn
+    aws_storage_aws_role_arn = local.aws_storage_aws_role_arn
 }

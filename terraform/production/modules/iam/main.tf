@@ -33,7 +33,7 @@ resource "aws_iam_policy" "snowflake_access" {
 }
 
 resource "aws_iam_role" "mysnowflakerole" {
-  name                = "mysnowflakerole"
+  name                = var.aws_iam_snowflakerole_name
   assume_role_policy  = jsonencode({
     "Version": "2012-10-17",
     "Statement": [

@@ -24,7 +24,7 @@ resource "snowflake_stage" "stage" {
 resource "snowflake_stage" "stage_orders" {
   provider            = snowflake.sysadmin
   name                = "STAGE_ORDERS"
-  url                 = "s3://mdw-staging/orders"
+  url                 = "s3://${var.bucket_name}/orders"
   storage_integration = "s3"
   database            = snowflake_database.database["RETAIL"].name
   schema              = snowflake_schema.schema["STAGE"].name

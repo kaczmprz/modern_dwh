@@ -9,3 +9,7 @@ variable "snowflake_integration_storage_aws_iam_user_arn" {
 variable "snowflake_integration_storage_aws_external_id" {
     type = string
 }
+
+variable "aws_iam_snowflakerole_name" {
+    type = string
+}
